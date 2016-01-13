@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -18,7 +19,7 @@ public class User {
 	@Column(nullable=false)
 	private String name;
 	
-	@OneToMany
+	@ManyToMany
 	private List<Book> books = new ArrayList<Book>();
 	
 	public User() {

@@ -9,7 +9,8 @@ import app.model.User;
 @Repository
 public interface UserDAO extends org.springframework.data.repository.Repository<User, Integer>{
 	User save(User u);
-	Boolean delete(User u);
+//	void update(User u);
+	Boolean delete(Integer u);
 //	User merge(User u);
 	List<User> findAll();
 	User findById(Integer id);

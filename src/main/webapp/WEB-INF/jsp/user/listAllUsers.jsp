@@ -10,22 +10,40 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>User Page</title>
 </head>
 <body>
 	<ul class="menu">
-		<li><a href="/user/form">Cadastrar novo produto</a></li>
+		<li><a href="/user/form">Create new User</a></li>
+		<li><a href="/book/form">Create new Book</a></li>
 	</ul>
 	<br>
 	
+	<h2>Saved Users</h2>
 	<table>
 		<tr>
-			<td>Nome</td>
+			<td>Name</td>
+			<td>Book</td>
+			<td></td>
+			<td></td>
 		</tr>
 		<c:forEach items="${usuarios}" var="usuario">
 			<tr>
 				<td>
 					${usuario.name} 
+				</td>
+				<td>
+					<ul>
+						<c:forEach items="${usuario.books}" var="book">
+							<li> ${book.name}</li>
+						</c:forEach>
+					</ul>
+				</td>
+				<td>
+					<a href="/user/${usuario.id}/update">Update</a>
+				</td>
+				<td>
+					<a href="/user/${usuario.id}/excluir" onclick="return confirm('Do you really want to delete this user?')">Delete</a>
 				</td>
 			</tr>
 		</c:forEach>

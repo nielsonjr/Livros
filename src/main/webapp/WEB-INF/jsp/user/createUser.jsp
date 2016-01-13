@@ -9,11 +9,27 @@
 <title>Cadastrar Usuário</title>
 </head>
 <body>	 
-	<spring:url value="/user" var="userActionUrl" />
+	<spring:url value="/user/save" var="userActionUrl" />
 	
 	<form:form method="post" commandName="user" enctype="multipart/form-data" action="${userActionUrl}">
-    	<p>Nome: <form:input path="name" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+		<table>
+		<tr>
+			<td>Name: </td>
+			<td><form:input path="name" /></td>			
+		</tr>
+		<tr>
+			<td>Choose the Book: </td>
+			<td>
+				<form:select path="books" multiple="true"
+					items="${books}" itemLabel="name" itemValue="id" cssStyle="min-width: 100%"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right"><input type="submit" value="Save" /> <input type="reset" value="Reset" /></td>
+		</tr>
+		<tr>
+			<td><a href="/user">&lt;&lt;Back</a></td>
+		</tr>
     </form:form>
 </body>
 </html>

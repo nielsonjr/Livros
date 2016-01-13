@@ -3,10 +3,10 @@ package app.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -21,8 +21,9 @@ public class Book {
 	
 	private Integer year;
 	
+	@ElementCollection
 //	@NotEmpty
-//	private List<String> authors = new ArrayList<String>();
+	private List<String> authors = new ArrayList<String>();
 	
 	public Book() {
 	}
@@ -62,4 +63,11 @@ public class Book {
 //	}
 	
 	
+	public List<String> getAuthors() {
+		return authors;
+	}
+	
+	public void setAuthors(List<String> authors) {
+		this.authors = authors;
+	}
 }
