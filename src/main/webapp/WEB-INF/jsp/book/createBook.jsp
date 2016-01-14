@@ -9,6 +9,7 @@
 <title>Create Book</title>
 </head>
 <body>
+	
 	<spring:url value="/book" var="userActionUrl" />
 
 	<form:form method="post" commandName="book"

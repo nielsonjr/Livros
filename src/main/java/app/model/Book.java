@@ -11,7 +11,11 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
 	@Id @GeneratedValue
 	private Integer id;
@@ -32,9 +36,9 @@ public class Book {
 		this.name = name;
 		this.year = year;
 		
-//		for (String author : authors) {
-//			this.authors.add(author);
-//		}
+		for (String author : authors) {
+			this.authors.add(author);
+		}
 	}
 	
 	public Integer getId() {
@@ -55,13 +59,6 @@ public class Book {
 	public void setYear(Integer year) {
 		this.year = year;
 	}
-//	public List<String> getAuthors() {
-//		return authors;
-//	}
-//	public void setAuthors(List<String> authors) {
-//		this.authors = authors;
-//	}
-	
 	
 	public List<String> getAuthors() {
 		return authors;
