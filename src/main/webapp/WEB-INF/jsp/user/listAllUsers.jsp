@@ -16,6 +16,7 @@
 	<ul class="menu">
 		<li><a href="/user/form">Create new User</a></li>
 		<li><a href="/book/form">Create new Book</a></li>
+		<li><a href="/book/bookEmber">Create new Book using EmberJS</a></li>
 	</ul>
 	<br>
 	

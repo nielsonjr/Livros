@@ -2,6 +2,8 @@ package app.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -11,12 +13,15 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import app.ember.EmberLinks;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Book {
+public class Book implements EmberLinks{
 	@Id @GeneratedValue
 	private Integer id;
 	
@@ -60,11 +65,19 @@ public class Book {
 		this.year = year;
 	}
 	
+	@JsonIgnore
 	public List<String> getAuthors() {
 		return authors;
 	}
 	
 	public void setAuthors(List<String> authors) {
 		this.authors = authors;
+	}
+
+	@Override
+	public ConcurrentMap<String, String> getLinks() {
+		ConcurrentMap<String, String> links = new ConcurrentHashMap<String, String>();
+		links.put("authors", "authors");
+		return links;
 	}
 }

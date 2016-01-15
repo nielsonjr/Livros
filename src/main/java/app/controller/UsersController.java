@@ -98,20 +98,16 @@ public class UsersController {
 		binder.registerCustomEditor(List.class, "books", new CustomCollectionEditor(List.class) {
 			protected Object convertElement(Object element) {
 				if (element instanceof Book) {
-					System.out.println("Converting from Book to Book: " + element);
 					return element;
 				}
 				if (element instanceof Integer) {
 					Book book = bDAO.findById((Integer)element);
-					System.out.println("Looking up staff for id " + element + ": " + book);
 					return book;
 				}
 				if (element instanceof String) {
 					Book book = bDAO.findById(Integer.valueOf((String) element));
-					System.out.println("Looking up staff for id " + element + ": " + book);
 					return book;
 				}
-				System.out.println("Don't know what to do with: " + element);
 				return null;
 			}
 		});

@@ -27,6 +27,9 @@
 				<td colspan="2" align="right"><input type="submit" value="Save" />
 					<input type="reset" value="Reset" /></td>
 			</tr>
+			<tr>
+				<td><a href="/user">&lt;&lt;Back</a></td>
+			</tr>
 		</table>
 	</form:form>
 

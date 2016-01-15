@@ -14,8 +14,8 @@ import com.google.common.base.CaseFormat;
 public final class EmberModel extends ConcurrentHashMap<String, Object> {
 
     private EmberModel() {
-        //Must use the builder
     }
+    
 
     public static class Builder<T> implements app.pattern.Builder<EmberModel> {
         private final ConcurrentMap<String, Object> sideLoadedItems = new ConcurrentHashMap<String, Object>();
@@ -81,4 +81,6 @@ public final class EmberModel extends ConcurrentHashMap<String, Object> {
             return sideLoader;
         }
     }
+    
+    
 }

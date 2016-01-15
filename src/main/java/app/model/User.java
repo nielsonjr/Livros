@@ -2,6 +2,8 @@ package app.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,12 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import app.ember.EmberLinks;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class User {
+public class User implements EmberLinks {
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -53,11 +58,20 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@JsonIgnore
 	public List<Book> getBooks() {
 		return books;
 	}
 	public void setBooks(List<Book> books) {
 		this.books = books;
+	}
+
+	@Override
+	public ConcurrentMap<String, String> getLinks() {
+		ConcurrentMap<String, String> links = new ConcurrentHashMap<String, String>();
+		links.put("books", "books");
+		return links;
 	}
 	
 }
