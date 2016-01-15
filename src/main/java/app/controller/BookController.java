@@ -37,16 +37,15 @@ public class BookController {
 		return modelAndView;
 	}
 	
-//	@RequestMapping(path="/book/bookEmber")
-//	public ModelAndView emberForm() throws ServletException, IOException{
-//		ModelAndView modelAndView = new ModelAndView("/book/createBookEmber");
-//		List<Book> books = bDAO.findAll();
-//		
-//		modelAndView.addObject("book", books);
-//		modelAndView.addObject("book", new Book());
-//    	
-//		return modelAndView;
-//	}
+	@RequestMapping(path="/book/bookEmber")
+	public ModelAndView emberForm() throws ServletException, IOException{
+		ModelAndView modelAndView = new ModelAndView("/book/createBookEmber");
+		List<Book> books = bDAO.findAll();
+		
+		modelAndView.addObject("book", books);
+    	
+		return modelAndView;
+	}
 	
 	@RequestMapping(path="/book/bookEmber", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)

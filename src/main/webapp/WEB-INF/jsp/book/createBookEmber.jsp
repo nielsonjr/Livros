@@ -54,11 +54,7 @@
   <script>		
 		App = Ember.Application.create();
 
-		//Adapter
-		App.ApplicationAdapter = DS.RESTAdapter.extend({
-			namespace : 'book'
-			serializer: App.ApplicationSerializer.create()
-		});
+		
 
 		//Spring Serializer
 		App.SpringSerializer = DS.RESTSerializer.extend({
@@ -86,6 +82,10 @@
 					}
 				});
 		
+		//Adapter
+		App.ApplicationAdapter = DS.RESTAdapter.extend({
+			namespace : 'book'
+		});
 
 		//Models
 		App.Book = DS.Model.extend({
