@@ -12,15 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import app.ember.EmberLinks;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+//import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class User implements EmberLinks {
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class User {
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -59,19 +58,11 @@ public class User implements EmberLinks {
 		this.name = name;
 	}
 	
-	@JsonIgnore
+//	@JsonIgnore
 	public List<Book> getBooks() {
 		return books;
 	}
 	public void setBooks(List<Book> books) {
 		this.books = books;
 	}
-
-	@Override
-	public ConcurrentMap<String, String> getLinks() {
-		ConcurrentMap<String, String> links = new ConcurrentHashMap<String, String>();
-		links.put("books", "books");
-		return links;
-	}
-	
 }
