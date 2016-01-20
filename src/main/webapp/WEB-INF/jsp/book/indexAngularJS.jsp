@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <!DOCTYPE html>
-<html ng-app="bookManagerApp">
+<html ng-app="bookManagerApp" lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -20,29 +20,47 @@
 </head>
 <body>
 	<div ng-controller="bookManagerController"  style="width: 50%">
-		<h1>Manage Books</h1>
 		<br>
-		<form ng-submit="salvar(book, authors)" >
-			<table>
-				<tr>
-					<td><label for="titulo">Title: </label></td>
-					<td><input type="text" id="titulo" name="titulo"
-						ng-model="book.name" class="form-control" placeholder="Enter the book's name"/></td>
-				</tr>
-				<tr>
-					<td><label for="dataPublicacao">Year: </label></td>
-					<td><input type="text" id="dataPublicacao"
-						name="dataPublicacao" ng-model="book.year" class="form-control" placeholder="Enter the book's year"/></td>
-				</tr>
-				<tr>
-					<td colspan="2" align="center">Autores 
-						<a href="#" class="btn btn-success btn-xs" ng-click="addAuthor()">
-	          				<span class="glyphicon glyphicon-plus-sign"/>  
-	        			</a>
-        			</td>
-				</tr>
-				<tr ng-repeat="authorEntity in authors">
-					<td colspan="2">
+		<form ng-submit="salvar(book, authors)" class="form-horizontal" role="form" name="form" >
+			<fieldset>
+				<div class="alert alert-success" role="alert" ng-show="success"> {{success}}</div>
+				<div class="alert alert-error" role="alert" ng-show="error"> {{error}}</div>
+				<!-- Form Name -->
+				<legend>Create Book</legend>
+
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="control-label col-md-1" for="Title">Title</label>
+					<div class="col-md-11">
+						<input id="Title" name="Title" type="text"
+							placeholder="Enter the title fo the book"
+							class="form-control input-md" ng-model="book.name" required="required">
+
+					</div>
+				</div>
+
+				<!-- Text input-->
+				<div class="form-group" ng-class="{'has-error': form.year.$error.isanumber}">
+					<label class="col-md-1 control-label" for="year">Year</label>
+					<div class="col-md-5">
+						<input id="Year" name="year" type="text"
+							placeholder="Enter the year of the book"
+							class="form-control input-md" ng-model="book.year" required isanumber>
+						<p class="help-block" ng-if="form.year.$error.isanumber">Please, enter a number</p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-offset-6">
+						<label> Authors <a href="#" class="btn btn-success btn-xs"
+							ng-click="addAuthor()" title="Add Author"> <span
+								class="glyphicon glyphicon-plus-sign" />
+						</a>
+						</label>
+					</div>
+				</div>
+				<div class="form-group" ng-repeat="authorEntity in authors">
+					<div class="col-md-offset-1 col-md-11" >
 						<div class="input-group">
 							<input type="text" ng-model="authorEntity.name"
 								placeholder="Enter the Author's name" class="form-control" /> 
@@ -53,25 +71,32 @@
 								</a>
 							</span>
 						</div>
-						
-					</td>
-				</tr>
-				
-				
-				<tr>
-					<td colspan="2" align="right">
+					</div>
+				</div>
+
+				<!-- Button -->
+				<div class="form-group">
+					<div class="col-md-offset-9">
 						<input type="hidden" ng-model="book.id">
-						<button id="btnSalvar" type="submit" class="btn btn-success">
+						<button id="btnSave" type="submit" class="btn btn-success" ng-disabled="form.year.$error.isanumber">
 							<span class="glyphicon glyphicon-floppy-save"/>  Save
 						</button>
-					</td>
-				</tr>
-			</table>
+						<button id="btnReset" type="reset" class="btn btn-success" ng-disabled="form.year.$error.isanumber">
+							  <span class="glyphicon glyphicon-erase"/>  Reset
+						</button>
+					</div>
+				</div>
+
+			</fieldset>
+
 		</form>
 
-		<h1>Saved Books</h1>
+		
 		<table class="table table-hover">
 			<thead>
+				<tr>
+					<h3>Saved Books</h3>
+				</tr>
 				<tr>
 					<th>Name</th>
 					<th>Year</th>
@@ -104,6 +129,25 @@
 	<script>
 		var bookManagerApp = angular.module('bookManagerApp', ['ngAnimate']);
 		
+		//directive
+		bookManagerApp.directive('isanumber', function(){
+			return {
+				restrict: 'A',
+				require: 'ngModel',
+				
+				link: function(scope, element, attrs, controller) {
+					controller.$validators.isanumber = function(modelValue, viewValue) {
+						isNull = (typeof viewValue === 'undefined' || viewValue === null) ;
+						checkNumber = isNull || !isNaN(viewValue)
+						
+						
+						return checkNumber;
+				      };
+				}
+			}
+		})
+		
+		//Services
 		bookManagerApp.factory('bookService', ['$http', function($http) {
 
 		    function listar(callback) {
@@ -122,6 +166,8 @@
 		            data:{bookJSON : angular.toJson(book), authorsJSON: authors}  
 		        }).success(function (data) {
 		            if (callback) callback(data)
+		        }).error(function (data){
+		        	$scope.error = "It was not possible to save the book";
 		        });
 		    }
 		    
@@ -132,6 +178,8 @@
 		            data: JSON.stringify(book)  
 		        }).success(function (data) {
 		            if (callback) callback(data)
+		        }).error(function (data){
+		        	$scope.error = "It was not possible to delete the book";
 		        });
 		    }
 
@@ -142,8 +190,12 @@
 		    };
 
 		}])
-		.controller('bookManagerController', ['$scope', 'bookService',function($scope, bookService) {
+		
+		//Controller
+		bookManagerApp.controller('bookManagerController', ['$scope', 'bookService',function($scope, bookService) {
 			$scope.authors = [{name:''}];
+			$scope.success = "";
+			$scope.error = "";
 			
 			bookService.listar(function(books) {
 		        $scope.books = books;
@@ -154,15 +206,23 @@
 		    	   bookService.listar(function(books) {
 				        $scope.books = books;
 				    });
+		    	   
+		    	   $scope.success = 'The book ' + book.name + ' was saved with success!';
 		       })
 			}
 			
 			$scope.deleteBook = function(book) {
-		       bookService.deleteBook(book, function(book) {
-		    	   bookService.listar(function(books) {
-				        $scope.books = books;
-				    });
-		       })
+				var isRemove = confirm('Are you sure you want to delete this book?')
+				
+				if(isRemove) {
+			       	bookService.deleteBook(book, function(book) {
+			    	   bookService.listar(function(books) {
+					        $scope.books = books;
+					    });
+			    	   
+			    	   $scope.success = 'The book was deleted with success!';
+			       })
+				}
 			}
 			
 			$scope.updateBook = function(book) {
