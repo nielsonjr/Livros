@@ -25,92 +25,92 @@ import app.model.User;
 @RestController
 public class UsersController {
 
-	@Autowired
-	private UserDAO uDAO;
-	
-	@Autowired
-	private BookDAO bDAO;
-	
-	@RequestMapping(path="/user", method=RequestMethod.GET)
-	public ModelAndView list() throws ServletException, IOException{
-		ModelAndView modelAndView = new ModelAndView("/user/listAllUsers");
-		List<User> users = uDAO.findAll();
-		
-		modelAndView.addObject("usuarios", users);
-		
-		return modelAndView;
-	}
-	
-	@RequestMapping(path="/user/form")
-	public ModelAndView form() throws ServletException, IOException{
-		ModelAndView modelAndView = new ModelAndView("/user/createUser");
-		modelAndView.addObject("books", bDAO.findAll());
-		modelAndView.addObject("user", new User());
-		return modelAndView;
-	}
-	
-	@RequestMapping(path="/user/save", method=RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("user") User user,Model model){
-		if(user.getId() != null) {
-			User userFromDatabase = uDAO.findById(user.getId());
-			userFromDatabase.setBooks(user.getBooks());
-			userFromDatabase.setName(user.getName());
-			uDAO.save(userFromDatabase);
-		}
-		else {
-			uDAO.save(user);
-			
-		}
-		
-		return new ModelAndView("redirect:/user");
-	}
-	
-	@RequestMapping(path="/user/update", method=RequestMethod.POST)
-	public ModelAndView update(@ModelAttribute("user") User user,Model model){
-		uDAO.save(user);
-
-		return new ModelAndView("redirect:/user");
-	}
-	
-	@RequestMapping(path="/user/{id}/excluir", method=RequestMethod.GET)
-	public ModelAndView delete(@PathVariable("id") Integer id,Model model){
-		System.out.println("Bye, bye");
-		uDAO.delete(id);
-		
-		return new ModelAndView("redirect:/user");
-	}
-	
-	@RequestMapping(path="/user/{id}/update", method=RequestMethod.GET)
-	public ModelAndView update(@PathVariable("id") int id, Model model) {
-
-		User user = uDAO.findById(id);
-		
-		ModelAndView modelAndView = new ModelAndView("/user/updateUser");
-		modelAndView.addObject("books", bDAO.findAll());
-		modelAndView.addObject("user", user);
-		
-		return modelAndView;
-
-	}
-	
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) throws Exception {
-		binder.registerCustomEditor(List.class, "books", new CustomCollectionEditor(List.class) {
-			protected Object convertElement(Object element) {
-				if (element instanceof Book) {
-					return element;
-				}
-				if (element instanceof Integer) {
-					Book book = bDAO.findById((Integer)element);
-					return book;
-				}
-				if (element instanceof String) {
-					Book book = bDAO.findById(Integer.valueOf((String) element));
-					return book;
-				}
-				return null;
-			}
-		});
-	}
+//	@Autowired
+//	private UserDAO uDAO;
+//	
+//	@Autowired
+//	private BookDAO bDAO;
+//	
+//	@RequestMapping(path="/user", method=RequestMethod.GET)
+//	public ModelAndView list() throws ServletException, IOException{
+//		ModelAndView modelAndView = new ModelAndView("/user/listAllUsers");
+//		List<User> users = uDAO.findAll();
+//		
+//		modelAndView.addObject("usuarios", users);
+//		
+//		return modelAndView;
+//	}
+//	
+//	@RequestMapping(path="/user/form")
+//	public ModelAndView form() throws ServletException, IOException{
+//		ModelAndView modelAndView = new ModelAndView("/user/createUser");
+//		modelAndView.addObject("books", bDAO.findAll());
+//		modelAndView.addObject("user", new User());
+//		return modelAndView;
+//	}
+//	
+//	@RequestMapping(path="/user/save", method=RequestMethod.POST)
+//	public ModelAndView save(@ModelAttribute("user") User user,Model model){
+//		if(user.getId() != null) {
+//			User userFromDatabase = uDAO.findById(user.getId());
+//			userFromDatabase.setBooks(user.getBooks());
+//			userFromDatabase.setName(user.getName());
+//			uDAO.save(userFromDatabase);
+//		}
+//		else {
+//			uDAO.save(user);
+//			
+//		}
+//		
+//		return new ModelAndView("redirect:/user");
+//	}
+//	
+//	@RequestMapping(path="/user/update", method=RequestMethod.POST)
+//	public ModelAndView update(@ModelAttribute("user") User user,Model model){
+//		uDAO.save(user);
+//
+//		return new ModelAndView("redirect:/user");
+//	}
+//	
+//	@RequestMapping(path="/user/{id}/excluir", method=RequestMethod.GET)
+//	public ModelAndView delete(@PathVariable("id") Integer id,Model model){
+//		System.out.println("Bye, bye");
+//		uDAO.delete(id);
+//		
+//		return new ModelAndView("redirect:/user");
+//	}
+//	
+//	@RequestMapping(path="/user/{id}/update", method=RequestMethod.GET)
+//	public ModelAndView update(@PathVariable("id") int id, Model model) {
+//
+//		User user = uDAO.findById(id);
+//		
+//		ModelAndView modelAndView = new ModelAndView("/user/updateUser");
+//		modelAndView.addObject("books", bDAO.findAll());
+//		modelAndView.addObject("user", user);
+//		
+//		return modelAndView;
+//
+//	}
+//	
+//	@InitBinder
+//	protected void initBinder(WebDataBinder binder) throws Exception {
+//		binder.registerCustomEditor(List.class, "books", new CustomCollectionEditor(List.class) {
+//			protected Object convertElement(Object element) {
+//				if (element instanceof Book) {
+//					return element;
+//				}
+//				if (element instanceof Integer) {
+//					Book book = bDAO.findById((Integer)element);
+//					return book;
+//				}
+//				if (element instanceof String) {
+//					Book book = bDAO.findById(Integer.valueOf((String) element));
+//					return book;
+//				}
+//				return null;
+//			}
+//		});
+//	}
 
 }
