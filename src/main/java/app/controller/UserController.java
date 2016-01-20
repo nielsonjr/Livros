@@ -8,6 +8,9 @@ import java.util.Map;
 import javax.servlet.ServletException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,13 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import app.dao.BookDAO;
 import app.dao.UserDAO;
-import app.model.Author;
 //import app.ember.EmberModel;
 import app.model.Book;
 import app.model.User;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -57,10 +58,24 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping(path="/user/save", method=RequestMethod.POST)
-	public User save(@RequestBody User user) throws JsonParseException, JsonMappingException, IOException{
-		uDAO.save(user);
+	public User save(@RequestBody Map<String, Object> viewData) throws JsonParseException, JsonMappingException, IOException{
+		ObjectMapper JSONObjectMapper = new ObjectMapper();
+		User userEntity = JSONObjectMapper.readValue(viewData.get("user").toString(), User.class);
+		List<Book> books = getBooks((List<String>)viewData.get("selectedBooks"), JSONObjectMapper);
+		
+		if(userEntity != null && userEntity.getId() != null) {
+			//update Entity authors too
+			userEntity.setBooks(books);
+		}
+		else if(userEntity != null && userEntity.getId() == null) {
+			//create authors
+			userEntity.getBooks().addAll(books);
+		}
 
-		return user;
+		
+		uDAO.save(userEntity);
+
+		return userEntity;
 	}
 	
 	@ResponseBody
@@ -77,4 +92,17 @@ public class UserController {
 			return user;
 		}
 	}
+	
+	private List<Book> getBooks(List<String> booksFromView, ObjectMapper JSONObjectMapper) throws JsonParseException, JsonMappingException, IOException {
+		List<Book> books = new ArrayList<Book>();
+
+		for (String bookFromView : booksFromView) {
+			Book bookEntity = JSONObjectMapper.readValue(bookFromView.toString(), Book.class);
+
+			books.add(bookEntity);
+		}
+
+		return books;
+	}
+	
 }

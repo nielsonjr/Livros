@@ -42,7 +42,7 @@
 	</nav>
 	
 	<div ng-controller="userManagerController"  style="width: 50%">		
-		<form ng-submit="salvar(user)" class="form-horizontal" role="form" name="form" >
+		<form ng-submit="salvar(user, selectedBooks)" class="form-horizontal" role="form" name="form" >
 			<fieldset>
 				<div class="alert alert-success" role="alert" ng-show="success"> {{success}}</div>
 				<div class="alert alert-error" role="alert" ng-show="error"> {{error}}</div>
@@ -64,9 +64,9 @@
 				<div class="form-group">
 					<label class="col-md-1 control-label" for="books">Choose the Books</label>
 					<div class="col-md-5">
-						<select id="books" name="books" multiple="true" ng-model="user.books"
-							ng-options="book.name for book in books" required>
-							</select>
+						<select id="books" name="books" multiple="true" ng-model="selectedBooks" required>
+							<option ng-repeat="book in books track by $index" value="{{book}}" ng-selected="checkSelected(book)" />{{ book.name }}</option>
+						</select>
 					</div>
 				</div>			
 
@@ -135,11 +135,11 @@
 		        });
 		    }
 			
-		    function salvar(user, callback) {
+		    function salvar(user, selectedBooks, callback) {
 		        $http({
 		            method:'POST',
 		            url:'/user/save',
-		            data: angular.toJson(user) 
+		            data: {user: angular.toJson(user), selectedBooks: selectedBooks} 
 		        }).success(function (data) {
 		            if (callback) callback(data)
 		        }).error(function (data){
@@ -191,8 +191,8 @@
 		        
 		    });
 			
-			$scope.salvar = function(user) {
-		       userService.salvar(user, function(user) {
+			$scope.salvar = function(user, selectedBooks) {
+		       userService.salvar(user, selectedBooks, function(user) {
 		    	   userService.listar(function(users) {
 				        $scope.users = users;
 				    });
@@ -218,23 +218,26 @@
 			$scope.updateUser = function(user) {
 				$scope.user = user;
 				
+				
+			}
+			
+			$scope.checkSelected = function(book) {
+				var isSelected = false;
+				
 				 if($scope.user != null) {
 			        	var selectedBooks = $scope.user.books;
 			        	
 			        	for (index = 0; index < selectedBooks.length; index++) {
 			        		var selectedBook = selectedBooks[index];
 			        		
-			        		for(j = 0; j < $scope.books.length; j++) {
-			        			if($scope.books[j].id == selectedBook.id) {
-			        				$scope.books[j].selected = true; 
-			        				break;
-			        			}
-			        			
+			        		if(selectedBook.id == book.id) {
+		        				isSelected = true; 
+		        				return isSelected;
 			        		}
-			        		
-						    
 						}
-			        }
+					}
+				 
+				 return isSelected;
 			}
 			
 		}]);
