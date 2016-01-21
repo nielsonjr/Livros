@@ -1,7 +1,3 @@
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-
 <!DOCTYPE html>
 <html ng-app="bookManagerApp" lang="en">
 <head>
@@ -41,7 +37,7 @@
 		</div>
 	</nav>
 	
-	<div ng-controller="bookManagerController"  style="width: 50%">		
+	<div ng-controller="bookManagerController"  style="width: 50%; padding-bottom: 60px">		
 		<form ng-submit="salvar(book, authors)" class="form-horizontal" role="form" name="form" >
 			<fieldset>
 				<div class="alert alert-success" role="alert" ng-show="success"> {{success}}</div>
@@ -147,7 +143,19 @@
 		</table>
 
 	</div>
-	
+	<footer>
+		<div class="navbar navbar-default navbar-fixed-bottom">
+			<div class="container">
+				<div class="navbar-collapse collapse" id="footer-body">
+					<ul class="nav navbar-nav">
+						<li>Developed by Nielson da Silva Jr.<br> 
+							E-mail: nielsondasilvajr@gmail.com
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
 	<script>
 		var bookManagerApp = angular.module('bookManagerApp', ['ngAnimate']);
 		

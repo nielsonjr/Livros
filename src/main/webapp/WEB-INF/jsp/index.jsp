@@ -34,6 +34,19 @@
 	
 	<h1>Hey, welcome to the index page from the application</h1>
 	<br> 
-	You can manage your favorite books with this application. Click on the correct links in the navigation bar to be redirected to the page you want.  
+	You can manage your favorite books with this application. Click on the correct links in the navigation bar to be redirected to the page you want.
+	<footer>
+		<div class="navbar navbar-default navbar-fixed-bottom">
+			<div class="container">
+				<div class="navbar-collapse collapse" id="footer-body">
+					<ul class="nav navbar-nav">
+						<li>Developed by Nielson da Silva Jr.<br> 
+							E-mail: nielsondasilvajr@gmail.com
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>  
 </body>
 </html>

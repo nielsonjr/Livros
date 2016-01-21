@@ -18,7 +18,7 @@
 	src="http://code.angularjs.org/1.3.0-beta.14/angular-animate.js"></script>
 <title>Manage Users</title>
 </head>
-<body>
+<body >
 	<nav class="navbar navbar-default navbar-static-top">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -41,7 +41,7 @@
 		</div>
 	</nav>
 	
-	<div ng-controller="userManagerController"  style="width: 50%">		
+	<div ng-controller="userManagerController"  style="width: 50%; padding-bottom: 60px;">		
 		<form ng-submit="salvar(user, selectedBooks)" class="form-horizontal" role="form" name="form" >
 			<fieldset>
 				<div class="alert alert-success" role="alert" ng-show="success"> {{success}}</div>
@@ -120,6 +120,21 @@
 		</table>
 
 	</div>
+
+
+	<footer>
+		<div class="navbar navbar-default navbar-fixed-bottom">
+			<div class="container">
+				<div class="navbar-collapse collapse" id="footer-body">
+					<ul class="nav navbar-nav">
+						<li>Developed by Nielson da Silva Jr.<br> 
+							E-mail: nielsondasilvajr@gmail.com
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
 	<script>
 		var userManagerApp = angular.module('userManagerApp', ['ngAnimate']);
 		

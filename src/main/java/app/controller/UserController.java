@@ -39,7 +39,7 @@ public class UserController {
 
 	@RequestMapping(path="/user")
 	public ModelAndView form() throws ServletException, IOException{
-		ModelAndView modelAndView = new ModelAndView("/user/userAngularJS");
+		ModelAndView modelAndView = new ModelAndView("/user/user");
 
 		return modelAndView;
 	}
