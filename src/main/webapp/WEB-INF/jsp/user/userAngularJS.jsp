@@ -77,7 +77,7 @@
 						<button id="btnSave" type="submit" class="btn btn-success">
 							<span class="glyphicon glyphicon-floppy-save"/>  Save
 						</button>
-						<button id="btnReset" type="reset" class="btn btn-success">
+						<button id="btnReset" type="reset" class="btn btn-success" ng-click="clearAll(form)">
 							  <span class="glyphicon glyphicon-erase"/>  Reset
 						</button>
 					</div>
@@ -182,6 +182,8 @@
 			$scope.success = "";
 			$scope.error = "";
 			
+			var initialForm = angular.copy($scope.form);
+			
 			userService.listar(function(users) {
 		        $scope.users = users;
 		    });
@@ -198,6 +200,9 @@
 				    });
 		    	   
 		    	   $scope.success = 'The user ' + user.name + ' was saved with success!';
+		    	   
+		    	   $scope.clearAll();
+		    	   
 		       })
 			}
 			
@@ -215,29 +220,32 @@
 				}
 			}
 			
-			$scope.updateUser = function(user) {
+			$scope.updateUser = function(user) {				
 				$scope.user = user;
-				
-				
 			}
 			
 			$scope.checkSelected = function(book) {
 				var isSelected = false;
 				
-				 if($scope.user != null) {
-			        	var selectedBooks = $scope.user.books;
-			        	
-			        	for (index = 0; index < selectedBooks.length; index++) {
-			        		var selectedBook = selectedBooks[index];
-			        		
-			        		if(selectedBook.id == book.id) {
-		        				isSelected = true; 
-		        				return isSelected;
-			        		}
-						}
+				if($scope.user != null) {
+		        	var selectedBooks = $scope.user.books;
+		        	
+		        	for (index = 0; index < selectedBooks.length; index++) {
+		        		var selectedBook = selectedBooks[index];
+		        		
+		        		if(selectedBook.id == book.id) {
+	        				isSelected = true; 
+	        				return isSelected;
+		        		}
 					}
+				}
 				 
 				 return isSelected;
+			}
+			
+			$scope.clearAll = function() {
+				$scope.user = null;
+				$scope.selectedBooks = null;
 			}
 			
 		}]);

@@ -147,6 +147,7 @@
 		</table>
 
 	</div>
+	
 	<script>
 		var bookManagerApp = angular.module('bookManagerApp', ['ngAnimate']);
 		
